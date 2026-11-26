@@ -1,17 +1,17 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import Menu from './Menu'
-const TodayMenu = () => {
-    const [recipes, setrecipes] = useState([]);
+import {useState,useEffect } from 'react'
+import Menu from './Menu.jsx'
 
+
+const TodayMenu = () => {
+    const [recipes, setRecipes] = useState([]);
     async function getrecipe()
     {
         try{
-            const req = await fetch(fetch('https://dummyjson.com/recipes?select=name,image'));
-            const data = await req.json().recipes;
-
-            setrecipes(() => (data));
-
+            const req = await fetch('https://dummyjson.com/recipes?limit=7&select=name,image,rating,tags');
+            const data = await req.json();
+            setRecipes(recipes => data.recipes);
+            
         }
         catch(err)
         {
@@ -20,18 +20,23 @@ const TodayMenu = () => {
         }
 
     }
-    useEffect(()=> {getrecipe()}, []);
+    useEffect(()=> {getrecipe();
+    }, []);
   return (
     <div>
       <div className = "menuheader">
         <p>Today's Menu</p>
       </div>
-      {/* <div className = "menucontainer">
-        {
-        recipes.map((item, index) => <Menu key = {index + 1} props = {item}/>)
+      <div className = "menucontainer">
+      {
+        console.log(recipes.length)
       }
+        {
+          recipes.map((item, index) => {return <Menu props = {item} key = {index}/>})
+        }
+      
       </div>
-       */}
+      
     </div>
   )
 }
